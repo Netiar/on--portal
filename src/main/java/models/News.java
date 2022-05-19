@@ -53,4 +53,6 @@ public class News {
     public void setDepartmentId(int departmentId) {
         this.departmentId = departmentId;
     }
+
+
 }
