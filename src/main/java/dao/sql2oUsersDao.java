@@ -6,10 +6,13 @@ import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
 
-public class sql2oUsersDao implements UsersDao {
-    private final Sql2o sql2o;
+import java.util.List;
 
-    public sql2oUsersDao(Sql2o sql2o) {
+public class sql2oUsersDao implements UsersDao {
+    private Sql2o sql2o;
+
+
+    public void Sql2oUserDao(Sql2o sql2o) {
         this.sql2o = sql2o;
     }
 
@@ -73,6 +76,14 @@ public class sql2oUsersDao implements UsersDao {
             conn.createQuery(sql)
                     .addParameter("name", name)
                     .executeUpdate();
+        }
+    }
+
+    @Override
+    public List<Users> getAll() {
+        try (Connection conn = DB.sql2o.open()) {
+            return conn.createQuery("SELECT * FROM users")
+                    .executeAndFetch(Users.class);
         }
     }
 }
