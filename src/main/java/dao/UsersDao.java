@@ -2,6 +2,8 @@ package dao;
 
 import models.Users;
 
+import java.util.List;
+
 public interface UsersDao {
     //CRUD
     void add(Users user);
@@ -15,6 +17,8 @@ public interface UsersDao {
     void deleteById(int id);
 
     void deleteByName(String name);
+
+    List<Users> getAll();
 
     //Other methods
 
