@@ -2,48 +2,38 @@ package dao;
 
 
 import models.Departments;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.sql2o.Connection;
-import org.sql2o.Sql2o;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 class sql2oDepartmentsDaoTest {
 
     sql2oDepartmentsDao dao = new sql2oDepartmentsDao();
     Connection conn;
 
-    @Before
-    void setUp() throws Exception {
-
-        DB.sql2o = new Sql2o("jdbc:h2:mem:testing;INIT=RUNSCRIPT from 'classpath:sql/createh2.sql'","","");
-        conn = DB.sql2o.open();
-    }
-
-    @After
-    void tearDown() throws Exception {
-        conn.close();
+    @Test
+    public void add_instantiatesCorrectly_true() {
+        Departments departments = new Departments(2, "ping", "on-duty" );
+        assertEquals(true, departments instanceof Departments);
     }
 
     @Test
-     void add() {
-
+    public void findById_instantiatesCorrectly_true() {
+        Departments departments = new Departments(2, "ping", "on-duty" );
+        assertEquals(true, departments instanceof Departments);
     }
 
     @Test
-    void findById() {
-
+    public void update_instantiatesCorrectly_true() {
+        Departments departments = new Departments(2, "ping", "on-duty" );
+        assertEquals(true, departments instanceof Departments);
     }
 
     @Test
-    void update() {
-
-    }
-
-    @Test
-    void deleteById() {
-
+    public void deleteById_instantiatesCorrectly_true() {
+        Departments departments = new Departments(2, "ping", "on-duty" );
+        assertEquals(true, departments instanceof Departments);
     }
 }
