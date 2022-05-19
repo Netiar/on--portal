@@ -5,9 +5,9 @@ import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
 public class sql2oNewsDao implements NewsDao {
-    private final Sql2o sql2o;
+    private Sql2o sql2o;
 
-    public sql2oNewsDao(Sql2o sql2o) {
+    public void Sql2oNewsDao(Sql2o sql2o) {
         this.sql2o = sql2o;
     }
 
