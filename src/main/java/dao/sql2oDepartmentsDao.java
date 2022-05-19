@@ -3,6 +3,8 @@ package dao;
 import models.Departments;
 import org.sql2o.Connection;
 
+import java.util.List;
+
 public class sql2oDepartmentsDao  implements DepartmentsDao{
     @Override
     public void add(Departments department) {
@@ -49,4 +51,25 @@ public class sql2oDepartmentsDao  implements DepartmentsDao{
         }
 
     }
+
+    @Override
+    public List<Departments> getAllObject() {
+        String sql = "SELECT * FROM departments";
+        try (Connection con = DB.sql2o.open()) {
+            return con.createQuery(sql)
+                    .executeAndFetch(Departments.class);
+        }
+    }
+
+    @Override
+    public List<Departments> getAll() {
+        String sql = "SELECT * FROM departments";
+        try (Connection con = DB.sql2o.open()) {
+            return con.createQuery(sql)
+                    .executeAndFetch(Departments.class);
+        }
+    }
+
+
+
 }
