@@ -8,7 +8,7 @@ public class Users {
     private static String rank;
     private static String staffRole;
     private static int dept_id;
-    static String department;
+    public static String department;
 
 
     public Users() {
