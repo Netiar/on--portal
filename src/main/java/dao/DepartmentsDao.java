@@ -1,6 +1,10 @@
 package dao;
 
+import javafx.beans.binding.Bindings;
 import models.Departments;
+
+import java.util.Collection;
+import java.util.List;
 
 public interface DepartmentsDao {
     //CRUD
@@ -13,10 +17,7 @@ public interface DepartmentsDao {
     void deleteById(int id);
 
 
+    List<Departments> getAllObject();
 
-
-
-
-
-
+    List<Departments> getAll();
 }
