@@ -45,6 +45,7 @@ public class Departments {
         return id == that.id && name.equals(that.name) && description.equals(that.description);
     }
 
+
     @Override
     public int hashCode() {
         return Objects.hash(id, name, description);
