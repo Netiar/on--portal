@@ -17,7 +17,7 @@ public class sql2oUsersDao implements UsersDao {
     public void add(Users user) {
         String sql = "INSERT INTO users (name,rank,staffRole,dept_id) VALUES (:name, :rank, :staffRole, :dept_id)";
         String sql2 = "SELECT * from departments WHERE id=:dept_id";
-        try (Connection conn = sql2o.open()) {
+        try (Connection conn = DB.sql2o.open()) {
             int id = (int) conn.createQuery(sql, true)
                     .bind(user)
                     .executeUpdate()
@@ -30,7 +30,7 @@ public class sql2oUsersDao implements UsersDao {
 
     @Override
     public Users findById(int id) {
-        try (Connection conn = sql2o.open()) {
+        try (Connection conn = DB.sql2o.open()) {
             return conn.createQuery("SELECT * FROM users WHERE id = :id")
                     .addParameter("id", id)
                     .executeAndFetchFirst(Users.class);
@@ -39,7 +39,7 @@ public class sql2oUsersDao implements UsersDao {
 
     @Override
     public Users findByName(String name) {
-        try (Connection conn = sql2o.open()) {
+        try (Connection conn = DB.sql2o.open()) {
             return conn.createQuery("SELECT * FROM users WHERE name = :name")
                     .addParameter("name", name)
                     .executeAndFetchFirst(Users.class);
@@ -49,7 +49,7 @@ public class sql2oUsersDao implements UsersDao {
     @Override
     public void update(int id, Users user) {
         String sql = "UPDATE users SET name = :name, rank = :rank, staffRole = :staffRole, dept_id = :dept_id WHERE id = :id";
-        try (Connection conn = sql2o.open()) {
+        try (Connection conn = DB.sql2o.open()) {
             conn.createQuery(sql)
                     .bind(user)
                     .executeUpdate();
@@ -59,7 +59,7 @@ public class sql2oUsersDao implements UsersDao {
     @Override
     public void deleteById(int id) {
         String sql = "DELETE FROM users WHERE id = :id";
-        try (Connection conn = sql2o.open()) {
+        try (Connection conn = DB.sql2o.open()) {
             conn.createQuery(sql)
                     .addParameter("id", id)
                     .executeUpdate();
@@ -69,7 +69,7 @@ public class sql2oUsersDao implements UsersDao {
     @Override
     public void deleteByName(String name) {
         String sql = "DELETE FROM users WHERE name = :name";
-        try (Connection conn = sql2o.open()) {
+        try (Connection conn = DB.sql2o.open()) {
             conn.createQuery(sql)
                     .addParameter("name", name)
                     .executeUpdate();
