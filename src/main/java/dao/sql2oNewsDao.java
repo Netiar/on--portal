@@ -4,6 +4,8 @@ import models.News;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
+import java.awt.*;
+
 public class sql2oNewsDao implements NewsDao {
     private Sql2o sql2o;
 
@@ -58,8 +60,8 @@ public class sql2oNewsDao implements NewsDao {
         try (org.sql2o.Connection con = DB.sql2o.open()) {
             con.createQuery(sql)
                     .addParameter("id", id)
-                    .addParameter("title", news.getTitle())
-                    .addParameter("content", news.getContent())
+                    .addParameter("title", news.getTitle(news))
+                    .addParameter("content", news.getContent("ping"))
                     .executeUpdate();
         }
     }
@@ -84,6 +86,15 @@ public class sql2oNewsDao implements NewsDao {
                     .executeUpdate();
         }
 
+    }
+
+    @Override
+    public List getAll() {
+        String sql = "SELECT * FROM news";
+        try (Connection con = DB.sql2o.open()) {
+            return (List) con.createQuery(sql)
+                    .executeAndFetch(News.class);
+        }
     }
 
 
