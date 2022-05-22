@@ -18,7 +18,7 @@ class sql2oUsersDaoTest {
 
     @Before
     public void setUp() throws Exception {
-        DB.sql2o = new Sql2o("jdbc:h2:mem:testing;INIT=RUNSCRIPT from 'classpath:sql/createH2.sql'", "", "");
+        DB.sql2o = new Sql2o("jdbc:h2:mem:testing;INIT=RUNSCRIPT from 'classpath:sql/createh2.sql'", "", "");
         conn = DB.sql2o.open();
     }
 
