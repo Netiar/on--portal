@@ -1,12 +1,14 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 
 public class Users {
     private static int id;
     private String name;
     private static String rank;
-    private static String staffRole;
+    public static String staffRole;
     private static int dept_id;
     public static String department;
 
@@ -22,6 +24,10 @@ public class Users {
     }
 
 
+
+    public static Collection<Object> getAll() {
+        return new ArrayList<>();
+    }
 
 
     public int getId() {
@@ -83,5 +89,9 @@ public class Users {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, rank, staffRole, dept_id, department);
+    }
+
+    public void save(int i) {
+
     }
 }
