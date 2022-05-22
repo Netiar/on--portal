@@ -2,6 +2,7 @@ package response;
 
 import java.util.List;
 
+
 public class ResponseArray {
     private int status;
     private String message;
