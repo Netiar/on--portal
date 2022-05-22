@@ -6,11 +6,13 @@ public class Departments {
     private int id;
     private String name;
     private String description;
+    private String staffRole;
 
     public Departments(int id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.staffRole = staffRole;
     }
 
     public int getId() {
@@ -49,5 +51,15 @@ public class Departments {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, description);
+    }
+
+    public String getStaffRole(String s) {
+       this.staffRole = s;
+        return staffRole;
+
+    }
+
+    public void setStaffRole(String s) {
+        this.staffRole = s;
     }
 }
