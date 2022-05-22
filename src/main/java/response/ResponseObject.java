@@ -1,6 +1,7 @@
 package response;
 
 public class ResponseObject {
+
     private int status;
     private String message;
     private Object data;
