@@ -1,22 +1,49 @@
 import com.google.gson.Gson;
 import dao.DB;
-import org.sql2o.Connection;
+import dao.sql2oDepartmentsDao;
+import models.Departments;
+import org.sql2o.Sql2o;
+import response.ResponseArray;
+import response.ResponseObject;
 
+import java.util.Collections;
+import java.util.List;
+
+import static spark.Spark.*;
 public class App {
 
     public static  void main(String[] args) {
+        DB.sql2o = new Sql2o("jdbc:h2:mem:testing;INIT=RUNSCRIPT from 'classpath:sql/createh2.sql'","","");
+        sql2oDepartmentsDao departmentsDao = new sql2oDepartmentsDao();
 
-        Sql2oDepartmentDao departmentDao;
-        Sql2oNewsDao newsDao;
-        Sql2oUserDao userDao;
-        Gson gson = new Gson();
-        Connection conn;
+        post("/departments/new",(request, response) -> {
+            Gson gson = new Gson();
+            Departments departments = gson.fromJson(request.body(), Departments.class);
+            departmentsDao.add(departments);
+            ResponseObject responseObject = new ResponseObject(201,"Department Added Successfully!");
+            responseObject.setData(new Object());
+            response.status(201);
+            response.type("application/json");
+            return gson.toJson(responseObject);
+        });
 
-        departmentDao = new Sql2oDepartmentDao(DB.sql2o);
-        newsDao = new Sql2oNewsDao(DB.sql2o);
-        userDao = new Sql2oUserDao(DB.sql2o);
-        conn = DB.sql2o.open();
+        get("/departments",(request, response) -> {
+            Gson gson = new Gson();
+            List<Departments> list = departmentsDao.getAll();
+            ResponseArray responseArray = new ResponseArray(200,"Success");
+            responseArray.setData(Collections.singletonList(list));
+            response.status(200);
+            response.type("application/json");
+            return gson.toJson(responseArray);
+        });
 
+
+
+
+
+//        after((req, res) ->{
+//            res.type("application/json");
+//        });
     }
-  // Still working on the app
+
 }

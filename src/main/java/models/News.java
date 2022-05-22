@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Objects;
+
 public class News {
     private int id;
     private String title;
@@ -14,19 +16,23 @@ public class News {
         this.departmentId = departmentId;
     }
 
-    public int getId() {
+    public static News newNews(String title, String content, int i, int i1) {
+        return new News(title, content, i, i1);
+    }
+
+    public int getId(int i) {
         return id;
     }
 
-    public String getTitle() {
+    public String getTitle(News news) {
         return title;
     }
 
-    public String getContent() {
+    public String getContent(String ping) {
         return content;
     }
 
-    public int getUserId() {
+    public int getUserId(int i) {
         return userId;
     }
 
@@ -54,5 +60,16 @@ public class News {
         this.departmentId = departmentId;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        News news = (News) o;
+        return id == news.id && userId == news.userId && departmentId == news.departmentId && title.equals(news.title) && content.equals(news.content);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, content, userId, departmentId);
+    }
 }

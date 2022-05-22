@@ -14,48 +14,355 @@ A REST API for querying and retrieving scoped news and information.
 - Your application must run on the OpenJDK version 11 or higher
 
 ## Database Set Up
+- navigate to  /src/main/resources/sql/ to find database
 - Type psql
 - CREATE DATABASE news_ping; \c news_ping ; 
 - \dt to view the tables;-
 - \q to quit
+- 
+- 
+###   CREATE DATABASE news_ping; 
 
-## Technologies Used
+        \c news_ping ;
+        
+         CREATE TABLE users(
+         id serial PRIMARY KEY,
+         name VARCHAR,
+         rank VARCHAR,
+         staffRole VARCHAR,
+         dept_id INTEGER
+         );
 
-- Java v11
-- Gradle
-- Spark Framework
-- CSS (Bootstrap)
-- JUnit v4.12
-- Jacoco Plugin
-- postgresql
+         CREATE TABLE departments(
+         id serial PRIMARY KEY,
+         name VARCHAR,
+         description VARCHAR
+         );
+
+         CREATE TABLE news(
+         id serial PRIMARY KEY,
+         title VARCHAR,
+         content VARCHAR,
+         userid INTEGER,
+         departmentid INTEGER
+);
 
 
-## Setup Installations Requirements
-* To run the application, in your terminal:
+##  list of sample data endpoints.
+##  Departments.
 
-    1. Clone or download the Repository
-    2. cd into directory then run `cd Hero-Squad`
-    3. Rebuild the Project Using Intellij IDEA or ...
-    4. Open terminal command line then navigate to the root folder of the application.
-    5. Run `gradle run` command.
-    6. Navigate to `http://localhost:4567/` in your browser.
+### Request
+
+`GET /departments`
+
+    curl -i -H 'Accept: application/json' http://localhost:0.0.0.0:4567//departments
+
+### Response
+
+     {
+        "status": 200,
+        "message": "Success",
+         "data": [
+           []
+         ]
+    }
+
+### Request
+
+`POST /departments/news`
+
+    curl -i -H 'Accept: application/json' -d 'name=Foo&status=new' http://localhost:4567//departments/news
+
+### Response
+
+    {
+    "status": 201,
+    "message": "Department Added Successfully!",
+    "data": {}
+    }
+
+## Get a specific Thing
+
+### Request
+
+`GET /thing/id`
+
+    curl -i -H 'Accept: application/json' http://localhost:7000/thing/1
+
+### Response
+
+    HTTP/1.1 200 OK
+    Date: Thu, 24 Feb 2011 12:36:30 GMT
+    Status: 200 OK
+    Connection: close
+    Content-Type: application/json
+    Content-Length: 36
+
+    {"id":1,"name":"Foo","status":"new"}
+
+## Get a non-existent Thing
+
+### Request
+
+`GET /thing/id`
+
+    curl -i -H 'Accept: application/json' http://localhost:7000/thing/9999
+
+### Response
+
+    HTTP/1.1 404 Not Found
+    Date: Thu, 24 Feb 2011 12:36:30 GMT
+    Status: 404 Not Found
+    Connection: close
+    Content-Type: application/json
+    Content-Length: 35
+
+    {"status":404,"reason":"Not found"}
+
+## Create another new Thing
+
+### Request
+
+`POST /thing/`
+
+    curl -i -H 'Accept: application/json' -d 'name=Bar&junk=rubbish' http://localhost:7000/thing
+
+### Response
+
+    HTTP/1.1 201 Created
+    Date: Thu, 24 Feb 2011 12:36:31 GMT
+    Status: 201 Created
+    Connection: close
+    Content-Type: application/json
+    Location: /thing/2
+    Content-Length: 35
+
+    {"id":2,"name":"Bar","status":null}
+
+## Get list of Things again
+
+### Request
+
+`GET /thing/`
+
+    curl -i -H 'Accept: application/json' http://localhost:7000/thing/
+
+### Response
+
+    HTTP/1.1 200 OK
+    Date: Thu, 24 Feb 2011 12:36:31 GMT
+    Status: 200 OK
+    Connection: close
+    Content-Type: application/json
+    Content-Length: 74
+
+    [{"id":1,"name":"Foo","status":"new"},{"id":2,"name":"Bar","status":null}]
+
+## Change a Thing's state
+
+### Request
+
+`PUT /thing/:id/status/changed`
+
+    curl -i -H 'Accept: application/json' -X PUT http://localhost:7000/thing/1/status/changed
+
+### Response
+
+    HTTP/1.1 200 OK
+    Date: Thu, 24 Feb 2011 12:36:31 GMT
+    Status: 200 OK
+    Connection: close
+    Content-Type: application/json
+    Content-Length: 40
+
+    {"id":1,"name":"Foo","status":"changed"}
+
+## Get changed Thing
+
+### Request
+
+`GET /thing/id`
+
+    curl -i -H 'Accept: application/json' http://localhost:7000/thing/1
+
+### Response
+
+    HTTP/1.1 200 OK
+    Date: Thu, 24 Feb 2011 12:36:31 GMT
+    Status: 200 OK
+    Connection: close
+    Content-Type: application/json
+    Content-Length: 40
+
+    {"id":1,"name":"Foo","status":"changed"}
+
+## Change a Thing
+
+### Request
+
+`PUT /thing/:id`
+
+    curl -i -H 'Accept: application/json' -X PUT -d 'name=Foo&status=changed2' http://localhost:7000/thing/1
+
+### Response
+
+    HTTP/1.1 200 OK
+    Date: Thu, 24 Feb 2011 12:36:31 GMT
+    Status: 200 OK
+    Connection: close
+    Content-Type: application/json
+    Content-Length: 41
+
+    {"id":1,"name":"Foo","status":"changed2"}
+
+## Attempt to change a Thing using partial params
+
+### Request
+
+`PUT /thing/:id`
+
+    curl -i -H 'Accept: application/json' -X PUT -d 'status=changed3' http://localhost:7000/thing/1
+
+### Response
+
+    HTTP/1.1 200 OK
+    Date: Thu, 24 Feb 2011 12:36:32 GMT
+    Status: 200 OK
+    Connection: close
+    Content-Type: application/json
+    Content-Length: 41
+
+    {"id":1,"name":"Foo","status":"changed3"}
+
+## Attempt to change a Thing using invalid params
+
+### Request
+
+`PUT /thing/:id`
+
+    curl -i -H 'Accept: application/json' -X PUT -d 'id=99&status=changed4' http://localhost:7000/thing/1
+
+### Response
+
+    HTTP/1.1 200 OK
+    Date: Thu, 24 Feb 2011 12:36:32 GMT
+    Status: 200 OK
+    Connection: close
+    Content-Type: application/json
+    Content-Length: 41
+
+    {"id":1,"name":"Foo","status":"changed4"}
+
+## Change a Thing using the _method hack
+
+### Request
+
+`POST /thing/:id?_method=POST`
+
+    curl -i -H 'Accept: application/json' -X POST -d 'name=Baz&_method=PUT' http://localhost:7000/thing/1
+
+### Response
+
+    HTTP/1.1 200 OK
+    Date: Thu, 24 Feb 2011 12:36:32 GMT
+    Status: 200 OK
+    Connection: close
+    Content-Type: application/json
+    Content-Length: 41
+
+    {"id":1,"name":"Baz","status":"changed4"}
+
+## Change a Thing using the _method hack in the url
+
+### Request
+
+`POST /thing/:id?_method=POST`
+
+    curl -i -H 'Accept: application/json' -X POST -d 'name=Qux' http://localhost:7000/thing/1?_method=PUT
+
+### Response
+
+    HTTP/1.1 404 Not Found
+    Date: Thu, 24 Feb 2011 12:36:32 GMT
+    Status: 404 Not Found
+    Connection: close
+    Content-Type: text/html;charset=utf-8
+    Content-Length: 35
+
+    {"status":404,"reason":"Not found"}
+
+## Delete a Thing
+
+### Request
+
+`DELETE /thing/id`
+
+    curl -i -H 'Accept: application/json' -X DELETE http://localhost:7000/thing/1/
+
+### Response
+
+    HTTP/1.1 204 No Content
+    Date: Thu, 24 Feb 2011 12:36:32 GMT
+    Status: 204 No Content
+    Connection: close
 
 
-### Development
+## Try to delete same Thing again
 
-Want to contribute? Great!
+### Request
 
-To fix a bug or enhance an existing module, follow these steps:
+`DELETE /thing/id`
 
-- Fork the repo
-- Create a new branch (`git checkout -b improve-feature`)
-- Make the appropriate changes in the files
-- Add changes to reflect the changes made
-- Commit your changes (`git commit -am 'Improve feature'`)
-- Push to the branch (`git push origin improve-feature`)
-- Create a Pull Request on GitHub
+    curl -i -H 'Accept: application/json' -X DELETE http://localhost:7000/thing/1/
 
-### License
+### Response
+
+    HTTP/1.1 404 Not Found
+    Date: Thu, 24 Feb 2011 12:36:32 GMT
+    Status: 404 Not Found
+    Connection: close
+    Content-Type: application/json
+    Content-Length: 35
+
+    {"status":404,"reason":"Not found"}
+
+## Get deleted Thing
+
+### Request
+
+`GET /thing/1`
+
+    curl -i -H 'Accept: application/json' http://localhost:7000/thing/1
+
+### Response
+
+    HTTP/1.1 404 Not Found
+    Date: Thu, 24 Feb 2011 12:36:33 GMT
+    Status: 404 Not Found
+    Connection: close
+    Content-Type: application/json
+    Content-Length: 35
+
+    {"status":404,"reason":"Not found"}
+
+## Delete a Thing using the _method hack
+
+### Request
+
+`DELETE /thing/id`
+
+    curl -i -H 'Accept: application/json' -X POST -d'_method=DELETE' http://localhost:7000/thing/2/
+
+### Response
+
+    HTTP/1.1 204 No Content
+    Date: Thu, 24 Feb 2011 12:36:33 GMT
+    Status: 204 No Content
+    Connection: close
+
+
+
+
 
 *MIT*
 Copyright (c) 2022 **Collins Netia Odinga**

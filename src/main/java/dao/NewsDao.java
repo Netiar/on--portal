@@ -2,6 +2,8 @@ package dao;
 
 import models.News;
 
+import java.awt.*;
+
 public interface NewsDao {
     //CRUD
     void add(News news);
@@ -17,6 +19,10 @@ public interface NewsDao {
     void deleteById(int id);
 
     void deleteByTitle(String title);
+
+
+
+    List getAll();
 
     //Other methods
 
