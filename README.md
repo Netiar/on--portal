@@ -14,13 +14,12 @@ A REST API for querying and retrieving scoped news and information.
 - Your application must run on the OpenJDK version 11 or higher
 
 ## Database Set Up
-- navigate to  /src/main/resources/sql/ to find database
+- navigate to  `src/main/resources/sql` to find database
 - Type psql
 - CREATE DATABASE news_ping; \c news_ping ; 
 - \dt to view the tables;-
-- \q to quit
-- 
-- 
+- \q to quit 
+ 
 ###   CREATE DATABASE news_ping; 
 
         \c news_ping ;
@@ -47,6 +46,43 @@ A REST API for querying and retrieving scoped news and information.
          departmentid INTEGER
 );
 
+## Technologies Used
+
+- Java v11
+- Gradle
+- Spark Framework
+- CSS (Bootstrap)
+- JUnit v4.12
+- Jacoco Plugin
+- postgresql
+
+
+## Setup Installations Requirements
+* To run the application, in your terminal:
+
+    1. Clone or download the Repository
+    2. cd into directory then run `cd news-portal`
+    3. Rebuild the Project Using Intellij IDEA or ...
+    4. Open terminal command line then navigate to the root folder of the application.
+    5. Run `gradle run` command.
+    6. Navigate to `http://localhost:4567/` in your browser.
+
+
+### Development
+
+Want to contribute? Great!
+
+To fix a bug or enhance an existing module, follow these steps:
+
+- Fork the repo
+- Create a new branch (`git checkout -b improve-feature`)
+- Make the appropriate changes in the files
+- Add changes to reflect the changes made
+- Commit your changes (`git commit -am 'Improve feature'`)
+- Push to the branch (`git push origin improve-feature`)
+- Create a Pull Request on GitHub
+
+
 
 ##  list of sample data endpoints.
 ##  Departments.
@@ -69,9 +105,9 @@ A REST API for querying and retrieving scoped news and information.
 
 ### Request
 
-`POST /departments/news`
+`POST /departments/new`
 
-    curl -i -H 'Accept: application/json' -d 'name=Foo&status=new' http://localhost:4567//departments/news
+    curl -i -H 'Accept: application/json' -d 'name=Foo&status=new' http://localhost:4567/departments/new
 
 ### Response
 
@@ -81,285 +117,87 @@ A REST API for querying and retrieving scoped news and information.
     "data": {}
     }
 
-## Get a specific Thing
+## Get departmental news
 
 ### Request
 
-`GET /thing/id`
+`GET /departments/news
 
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/1
+    curl -i -H 'Accept: application/json' http://localhost:0.0.0.0:4567/departments/news
 
 ### Response
 
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:30 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 36
+        {
+         "status": 200,
+         "message": "Success",
+         "data": [
+            []
+          ]
+         }
 
-    {"id":1,"name":"Foo","status":"new"}
-
-## Get a non-existent Thing
+## Get new departmental news
 
 ### Request
 
-`GET /thing/id`
+`post //departments/news/new`
 
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/9999
+    curl -i -H 'Accept: application/json' http://localhost:4567/departments/news/new
 
 ### Response
 
-    HTTP/1.1 404 Not Found
-    Date: Thu, 24 Feb 2011 12:36:30 GMT
-    Status: 404 Not Found
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 35
+     {
+    "status": 201,
+    "message": "News Added to department Successfully!",
+    "data": {}
+    }
 
-    {"status":404,"reason":"Not found"}
+   
 
-## Create another new Thing
+## News with error
 
 ### Request
 
-`POST /thing/`
+`POST //users/new`
 
-    curl -i -H 'Accept: application/json' -d 'name=Bar&junk=rubbish' http://localhost:7000/thing
+    curl -i -H 'Accept: application/json' -d 'name=Bar&junk=rubbish' http://localhost:4567/users/new
 
 ### Response
 
-    HTTP/1.1 201 Created
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
-    Status: 201 Created
-    Connection: close
-    Content-Type: application/json
-    Location: /thing/2
-    Content-Length: 35
-
-    {"id":2,"name":"Bar","status":null}
-
-## Get list of Things again
+    {
+    "status": 404,
+    "message": "Invalid Request",
+    "data": {}
+    }
 
 ### Request
 
-`GET /thing/`
+`get/users/new`
 
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/
+    curl -i -H 'Accept: application/json' -d 'name=Bar&junk=rubbish' http://localhost:4567/users
 
 ### Response
 
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 74
+    {
+    "status": 404,
+    "message": "Invalid Request",
+    "data": {}
+    }
 
-    [{"id":1,"name":"Foo","status":"new"},{"id":2,"name":"Bar","status":null}]
-
-## Change a Thing's state
+## delete department
 
 ### Request
 
-`PUT /thing/:id/status/changed`
+`de //users
 
-    curl -i -H 'Accept: application/json' -X PUT http://localhost:7000/thing/1/status/changed
-
-### Response
-
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 40
-
-    {"id":1,"name":"Foo","status":"changed"}
-
-## Get changed Thing
-
-### Request
-
-`GET /thing/id`
-
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/1
+    curl -i -H 'Accept: application/json' -d 'name=Bar&junk=rubbish' http://localhost:4567/users/new
 
 ### Response
 
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 40
-
-    {"id":1,"name":"Foo","status":"changed"}
-
-## Change a Thing
-
-### Request
-
-`PUT /thing/:id`
-
-    curl -i -H 'Accept: application/json' -X PUT -d 'name=Foo&status=changed2' http://localhost:7000/thing/1
-
-### Response
-
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 41
-
-    {"id":1,"name":"Foo","status":"changed2"}
-
-## Attempt to change a Thing using partial params
-
-### Request
-
-`PUT /thing/:id`
-
-    curl -i -H 'Accept: application/json' -X PUT -d 'status=changed3' http://localhost:7000/thing/1
-
-### Response
-
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:32 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 41
-
-    {"id":1,"name":"Foo","status":"changed3"}
-
-## Attempt to change a Thing using invalid params
-
-### Request
-
-`PUT /thing/:id`
-
-    curl -i -H 'Accept: application/json' -X PUT -d 'id=99&status=changed4' http://localhost:7000/thing/1
-
-### Response
-
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:32 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 41
-
-    {"id":1,"name":"Foo","status":"changed4"}
-
-## Change a Thing using the _method hack
-
-### Request
-
-`POST /thing/:id?_method=POST`
-
-    curl -i -H 'Accept: application/json' -X POST -d 'name=Baz&_method=PUT' http://localhost:7000/thing/1
-
-### Response
-
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:32 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 41
-
-    {"id":1,"name":"Baz","status":"changed4"}
-
-## Change a Thing using the _method hack in the url
-
-### Request
-
-`POST /thing/:id?_method=POST`
-
-    curl -i -H 'Accept: application/json' -X POST -d 'name=Qux' http://localhost:7000/thing/1?_method=PUT
-
-### Response
-
-    HTTP/1.1 404 Not Found
-    Date: Thu, 24 Feb 2011 12:36:32 GMT
-    Status: 404 Not Found
-    Connection: close
-    Content-Type: text/html;charset=utf-8
-    Content-Length: 35
-
-    {"status":404,"reason":"Not found"}
-
-## Delete a Thing
-
-### Request
-
-`DELETE /thing/id`
-
-    curl -i -H 'Accept: application/json' -X DELETE http://localhost:7000/thing/1/
-
-### Response
-
-    HTTP/1.1 204 No Content
-    Date: Thu, 24 Feb 2011 12:36:32 GMT
-    Status: 204 No Content
-    Connection: close
-
-
-## Try to delete same Thing again
-
-### Request
-
-`DELETE /thing/id`
-
-    curl -i -H 'Accept: application/json' -X DELETE http://localhost:7000/thing/1/
-
-### Response
-
-    HTTP/1.1 404 Not Found
-    Date: Thu, 24 Feb 2011 12:36:32 GMT
-    Status: 404 Not Found
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 35
-
-    {"status":404,"reason":"Not found"}
-
-## Get deleted Thing
-
-### Request
-
-`GET /thing/1`
-
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/1
-
-### Response
-
-    HTTP/1.1 404 Not Found
-    Date: Thu, 24 Feb 2011 12:36:33 GMT
-    Status: 404 Not Found
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 35
-
-    {"status":404,"reason":"Not found"}
-
-## Delete a Thing using the _method hack
-
-### Request
-
-`DELETE /thing/id`
-
-    curl -i -H 'Accept: application/json' -X POST -d'_method=DELETE' http://localhost:7000/thing/2/
-
-### Response
-
-    HTTP/1.1 204 No Content
-    Date: Thu, 24 Feb 2011 12:36:33 GMT
-    Status: 204 No Content
-    Connection: close
-
+    {
+    "status": 404,
+    "message": "Invalid Request",
+    "data": {}
+    }
 
 
 
