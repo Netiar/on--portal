@@ -27,7 +27,7 @@ class sql2oNewsDaoTest {
 
     @Test
     public void setId() {
-        News news = new News("", "ping",1 ,1);
+        News news = new News("Big-news", "ping",1 ,1);
         news.setId(3);
         assertEquals(3, news.getId(2));
     }
